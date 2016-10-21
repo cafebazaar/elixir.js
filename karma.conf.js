@@ -1,5 +1,33 @@
 var path = require('path')
 
+var lunchers = {
+  sl_firefox_45: {
+    base: 'SauceLabs',
+    browserName: 'firefox',
+    version: '45',
+  },
+  sl_firefox_44: {
+    base: 'SauceLabs',
+    browserName: 'firefox',
+    version: '44',
+  },
+  sl_firefox_43: {
+    base: 'SauceLabs',
+    browserName: 'firefox',
+    version: '43',
+  },
+  sl_chrome_48: {
+    base: 'SauceLabs',
+    browserName: 'chrome',
+    version: '48',
+  },
+  sl_chrome_47: {
+    base: 'SauceLabs',
+    browserName: 'chrome',
+    version: '47',
+  },
+}
+
 module.exports = function (config) {
   config.set({
     basePath: path.resolve(__dirname),
@@ -23,12 +51,17 @@ module.exports = function (config) {
         ],
       },
     },
-    reporters: ['progress'],
+    sauceLabs: {
+      testName: 'elixir.js',
+    },
+    customLaunchers: lunchers,
+    browsers: Object.keys(lunchers),
+    reporters: ['dots', 'saucelabs'],
+    singleRun: true,
     port: 9876,
     colors: true,
     logLevel: config.LOG_INFO,
     autoWatch: true,
-    browsers: ['PhantomJS', 'Chromium', 'Firefox'],
     concurrency: Infinity,
   })
 }
