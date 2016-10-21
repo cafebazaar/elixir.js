@@ -1,16 +1,13 @@
 var path = require('path')
 
-module.exports = function(config) {
+module.exports = function (config) {
   config.set({
-    basePath: '',
+    basePath: path.resolve(__dirname),
     frameworks: ['mocha', 'chai', 'sinon'],
-    files: [
-      'specs/*Spec.js'
-    ],
-    exclude: [
-    ],
+    files: ['specs/loader.js'],
+    exclude: [],
     preprocessors: {
-      'specs/*Spec.js': ['webpack', 'sourcemap'],
+      'specs/loader.js': ['webpack', 'sourcemap'],
     },
     webpack: {
       devtool: 'inline-source-map',
@@ -19,25 +16,19 @@ module.exports = function(config) {
           {
             test: /\.js/,
             include: [
-              path.resolve(__dirname, 'src'),
-              path.resolve(__dirname, 'spec'),
+              path.resolve(__dirname),
             ],
-            loader: 'babel'
-          }
-        ]
-      }
+            loader: 'babel',
+          },
+        ],
+      },
     },
     reporters: ['progress'],
     port: 9876,
     colors: true,
     logLevel: config.LOG_INFO,
     autoWatch: true,
-    browsers: ['Chrome', 'Firefox'],
-    // if true, Karma captures browsers, runs the tests and exits
-    //singleRun: false,
-
-    // Concurrency level
-    // how many browser should be started simultaneous
-    concurrency: Infinity
+    browsers: ['PhantomJS', 'Chromium', 'Firefox'],
+    concurrency: Infinity,
   })
 }

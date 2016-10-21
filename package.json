@@ -1,14 +1,30 @@
 {
+  "name": "elixir.js",
+  "version": "1.0.0",
+  "description": "Simulates part of Elixir standard library in JS",
+  "main": "dist/ex.js",
+  "browser": "dist/ex.js",
   "scripts": {
-    "test": "mocha --compilers js:babel-register specs/"
+    "watch": "karma start karma.conf.js",
+    "test": "npm run watch -- --single-run",
+    "lint": "eslint -c .eslintrc.js src",
+    "build": "webpack",
+    "prepublish": "npm run build"
   },
   "devDependencies": {
+    "babel-cli": "^6.16.0",
+    "babel-eslint": "^6.1.2",
     "babel-loader": "^6.2.5",
-    "babel-preset-es2015": "^6.14.0",
+    "babel-plugin-add-module-exports": "^0.2.1",
+    "babel-polyfill": "^6.16.0",
+    "babel-preset-es2015": "^6.13.2",
     "babel-preset-es2016": "^6.11.3",
     "babel-preset-stage-0": "^6.5.0",
-    "babel-register": "^6.14.0",
     "chai": "^3.5.0",
+    "eslint": "^3.3.1",
+    "eslint-config-standard": "^6.0.0-beta.3",
+    "eslint-plugin-promise": "^2.0.1",
+    "eslint-plugin-standard": "^2.0.0",
     "karma": "^1.2.0",
     "karma-babel-preprocessor": "^6.0.1",
     "karma-chai": "^0.1.0",
@@ -20,10 +36,26 @@
     "karma-sinon": "^1.0.5",
     "karma-sourcemap-loader": "^0.3.7",
     "karma-webpack": "^1.8.0",
+    "lodash.isequal": "^4.4.0",
     "mocha": "^3.0.2",
-    "phantomjs-prebuilt": "^2.1.12",
     "sinon": "^1.17.5",
-    "sinon-sandbox": "^1.0.2",
     "webpack": "^1.13.2"
-  }
+  },
+  "keywords": [
+    "util",
+    "stdlib",
+    "elixir",
+    "functional",
+    "immutable"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/cafebazaar/elixir.js"
+  },
+  "bugs": {
+    "url": "https://github.com/cafebazaar/elixir.js/issues"
+  },
+  "author": "Hassan Zamani <hsn.zamani@gmail.com>",
+  "license": "MIT",
+  "homepage": "https://github.com/cafebazaar/elixir.js"
 }

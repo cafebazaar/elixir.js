@@ -1,158 +1,161 @@
+import { BindableFor } from './Utils'
 
-export function at(index) {
-  return index >= 0 ? this[index] : this[this.length + index]
+export const IsList = Array.isArray
+
+const Clone = (list) => [].concat(list)
+
+const IndexOf = (list, index) =>
+  index >= 0 ? index : list.length + index
+
+const InBound = (list, index) =>
+  index >= 0 && index < list.length
+
+export const At = (list, index) =>
+  list[IndexOf(list, index)]
+
+const Append = (list, item) =>
+  [].concat(list, [item])
+
+const Concat = (list, other) =>
+  [].concat(list, other)
+
+const Remove = (array, item) => {
+  const index = array.findIndex(x => x === item)
+  if (index === -1) return array
+  const list = Clone(array)
+  list.splice(index, 1)
+  return list
 }
 
-export function delete(item) {
-  return this.filter((x) => x !== item)
+const DeleteAt = (array, index) => {
+  const list = Clone(array)
+  list.splice(IndexOf(array, index), 1)
+  return list
 }
 
-export function deleteAt(index) {
-  return this.splice(index, 1)
+const Diffenrence = (list, other) =>
+  list.filter(x => !other.includes(x))
+
+const Duplicate = (item, n) => {
+  const list = []
+  for (let i = 0; i < n; i++) list.push(item)
+  return list
 }
 
-export function duplicate(item, n) {
-  const res = []
-  for (let i = 0; i < n; i++) res.push(item)
-  return res
-}
+const First = list => list[0]
 
-export function first() {
-  return this[0]
-}
-
-export function flatten() {
-  let res = []
-  for (const item of this) {
-    res = res.concat(Array.isArray(item) ? item::flatten() : item)
+function Flatten (list, tail = []) {
+  let flattened = []
+  for (const item of list) {
+    flattened = flattened.concat(IsList(item) ? Flatten(item) : item)
   }
-  return res
+  return flattened.concat(tail)
 }
 
-export const foldl = reduce
+const FoldR = (list, initial, fn) =>
+  list.reduceRight((acc, x) => fn(x, acc), initial)
 
-export function foldr(initial, fn) {
-  this.reverse()::reduce(initial, fn)
-}
+const FoldL = (list, initial, fn) =>
+  list.reduce((acc, x) => fn(x, acc), initial)
 
-export function isList() {
-  return Array.isArray(this)
-}
-
-export function insertAt(index, value) {
-  return this.splice(index, 0, value)
-}
-
-export function keyDelete(key, position) {
-  const index = this::findIndex(key, position)
-  return index === -1 ? this : this::deleteAt(index)
-}
-
-export function keyFind(key, position) {
-  return this.find(el => el[position] === key)
-}
-
-export function keyMember(key, position) {
-  return this::keyFind(key, position) != null
-}
-
-export function keyIndex(key, position) {
-  return this.findIndex(el => el[position] === key)
-}
-
-export function keyReplace(key, position, newList) {
-  const index = this::keyIndex(key, position)
-  return index >= 0
-    ? this::replaceAt(index, newList)
-    : this
-}
-
-export function keySort(position) {
-  const copy = this.map(x => x)
-  return copy.sort((a, b) => {
-    if (a[position] > b[position]) return 1
-    if (a[position] < b[position]) return -1
-    return 0
-  })
-}
-
-export function keyStore(key, position, newList) {
-  const index = this::keyIndex(key, position)
-  return index >= 0
-    ? this::replaceAt(index, newList)
-    : this.map(x => x).push(newList)
-}
-
-export function keyTake(key, position) {
-  const index = this::findIndex(key, position)
-  return index === -1 ? null : [this[index], this::deleteAt(index)]
-}
-
-export function last() {
-  return this.length ? this[this.length - 1] : null
-}
-
-export function reduce(initial, fn) {
-  let acc = initial
-  for (const item of this) acc = fn(item, acc)
-  return acc
-}
-
-export function relpaceAt(index, value) {
-  if (this::hasAt(index)) {
-    return index >= 0
-      ? this.splice(index, 1, value)
-      : this.splice(this.length + index, 1, value)
+export const GetAndUpdate = (list, index, fn) => {
+  const value = At(list, index)
+  const result = fn(value)
+  if (result === 'pop') {
+    return [value, DeleteAt(list, index)]
   }
-  return this
+  return [result[0], ReplaceAt(list, index, result[1])]
 }
 
-export function hasAt(index) {
-  return this::at(index) != null
+const InserAt = (list, index, value) => {
+  const xs = Clone(list)
+  const where = index >= 0 ? index : list.length + 1 + index
+  xs.splice(where, 0, value)
+  return xs
 }
 
-export function updateAt(index, fn) {
-  return this::hasAt(index)
-    ? this::relpaceAt(index, fn(this::at(index)))
-    : this
+const Last = list => list[list.length - 1]
+
+const ReplaceAt = (list, index, value) => {
+  const where = IndexOf(list, index)
+  if (!InBound(list, where) || list[where] === value) return list
+  const xs = Clone(list)
+  xs.splice(where, 1, value)
+  return xs
 }
 
-export function wrap() {
-  return Array.isArray(this) ? this : [this]
+const UpdateAt = (list, index, fn) => {
+  const where = IndexOf(list, index)
+  if (!InBound(list, where)) return list
+  const xs = Clone(list)
+  xs.splice(where, 1, fn(xs[where]))
+  return xs
 }
 
-export function zip() {
-  const length = this::reduce(null, (l, x) => l ? Math.min(l, x.length) : x.length)
+const Wrap = (list) => {
+  if (list == null) return []
+  if (IsList(list)) return list
+  return [list]
+}
+
+const Zip = (lists) => {
+  const length = lists.reduce(
+    (l, x) => l ? Math.min(l, x.length) : x.length,
+    null
+  )
   const zipped = []
   for (let i = 0; i < length; i++) {
-      zipped[i] = this.map(x => x[i])
+    zipped[i] = lists.map(x => x[i])
   }
   return zipped
 }
 
-export default {
+const Module = Array
+const Bindable = BindableFor(Module)
+
+export const at = Bindable(At)
+export const append = Bindable(Append)
+export const concat = Bindable(Concat)
+export const remove = Bindable(Remove)
+export const deleteAt = Bindable(DeleteAt)
+export const duplicate = Bindable(Duplicate)
+export const diffenrence = Bindable(Diffenrence)
+export const first = Bindable(First)
+export const flatten = Bindable(Flatten)
+export const foldr = Bindable(FoldR)
+export const foldl = Bindable(FoldL)
+export const insertAt = Bindable(InserAt)
+export const isList = Bindable(IsList)
+export const last = Bindable(Last)
+export const replaceAt = Bindable(ReplaceAt)
+export const updateAt = Bindable(UpdateAt)
+export const wrap = Bindable(Wrap)
+export const zip = Bindable(Zip)
+
+Object.assign(Module, {
   at,
-  delete,
+  append,
+  concat,
+  delete: remove,
   deleteAt,
+  delete_at: deleteAt,
+  diffenrence,
   duplicate,
   first,
   flatten,
-  foldl,
   foldr,
+  foldl,
   insertAt,
-  keyDelete,
-  keyExist,
-  keyFind,
-  keyIndex,
-  keyMember,
-  keyReplace,
-  keySort,
-  keyStore,
+  insert_at: insertAt,
+  isList,
+  is_list: isList,
   last,
-  reduce,
   replaceAt,
+  replace_at: replaceAt,
   updateAt,
+  update_at: updateAt,
   wrap,
   zip,
-}
+})
 
+export default Module
