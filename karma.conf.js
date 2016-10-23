@@ -4,27 +4,12 @@ var lunchers = {
   sl_firefox_45: {
     base: 'SauceLabs',
     browserName: 'firefox',
-    version: '45',
-  },
-  sl_firefox_44: {
-    base: 'SauceLabs',
-    browserName: 'firefox',
-    version: '44',
-  },
-  sl_firefox_43: {
-    base: 'SauceLabs',
-    browserName: 'firefox',
-    version: '43',
+    version: 45,
   },
   sl_chrome_48: {
     base: 'SauceLabs',
     browserName: 'chrome',
-    version: '48',
-  },
-  sl_chrome_47: {
-    base: 'SauceLabs',
-    browserName: 'chrome',
-    version: '47',
+    version: 48,
   },
 }
 
@@ -54,6 +39,7 @@ module.exports = function (config) {
     sauceLabs: {
       testName: 'elixir.js',
     },
+    captureTimeout: 120000,
     customLaunchers: lunchers,
     browsers: Object.keys(lunchers),
     reporters: ['dots', 'saucelabs'],
@@ -61,7 +47,5 @@ module.exports = function (config) {
     port: 9876,
     colors: true,
     logLevel: config.LOG_INFO,
-    autoWatch: true,
-    concurrency: Infinity,
   })
 }
