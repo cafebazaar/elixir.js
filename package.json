@@ -8,7 +8,7 @@
     "watch": "karma start karma.conf.js",
     "test": "npm run watch -- --single-run",
     "lint": "eslint -c .eslintrc.js es6",
-    "build": "webpack",
+    "build": "webpack -p",
     "prepublish": "npm run build"
   },
   "devDependencies": {

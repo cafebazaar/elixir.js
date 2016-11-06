@@ -7,7 +7,7 @@ function path (file) {
 module.exports = {
   devtool: 'source-map',
 
-  entry: [path('src/index.js')],
+  entry: [path('es6/index.js')],
 
   output: {
     path: path('dist'),
@@ -21,7 +21,7 @@ module.exports = {
     loaders: [
       {
         test: /\.js$/,
-        include: [path('src')],
+        include: [path('es6')],
         loader: 'babel',
       },
     ],
