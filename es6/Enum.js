@@ -140,6 +140,11 @@ const Find = (enumerable, fn) =>
 
 const Not = (fn) => x => !fn(x)
 
+const Reduce = (enumerable, init, fn = null) =>
+  fn == null
+    ? ToList(enumerable).reduce((acc, x) => init(x, acc))
+    : ToList(enumerable).reduce(((acc, x) => fn(x, acc)), init)
+
 const Reject = (enumerable, fn) =>
   Filter(enumerable, Not(fn))
 
@@ -181,6 +186,7 @@ export const filter = Bindable(Filter)
 export const find = Bindable(Find)
 export const into = Bindable(Into)
 export const map = Bindable(FMap)
+export const reduce = Bindable(Reduce)
 export const reject = Bindable(Reject)
 export const sort = Bindable(Sort)
 export const toList = Bindable(ToList)
@@ -208,6 +214,7 @@ Object.assign(Module, {
   find,
   into,
   map,
+  reduce,
   reject,
   sort,
   toList,

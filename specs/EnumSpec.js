@@ -285,6 +285,16 @@ describe('Enum', () => {
     })
   })
 
+  describe('#reduce', () => {
+    it('reduces the enumerable', () => {
+      assert.equal(Enum.reduce([1, 2, 3, 4], (x, acc) => x * acc), 24)
+      assert.equal(Enum.reduce([1, 2, 3, 4], (x, acc) => x + acc), 10)
+
+      assert.equal(Enum.reduce([1, 2, 3, 4], 10, (x, acc) => x * acc), 240)
+      assert.equal(Enum.reduce([1, 2, 3, 4], -10, (x, acc) => x + acc), 0)
+    })
+  })
+
   describe('#sort', () => {
     it('sorts the enumerable according to string Unicode code points', () => {
       assert.deepEqual(Enum.sort([3, 2, 1]), [1, 2, 3])
