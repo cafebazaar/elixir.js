@@ -1,21 +1,11 @@
-import { GetAndUpdate as GUMap, MapOf, IsMap } from './Map'
+import isEqual from 'lodash.isequal'
+
+import { GetAndUpdate as GUMap, MapOf } from './Map'
 import { GetAndUpdate as GUList, IsList } from './List'
-import Enum from './Enum'
 
 import { BindableFor } from './Utils'
 
-function Equals (a, b) {
-  if (IsList(a)) {
-    if (!IsList(b)) return false
-    if (a.length !== b.length) return false
-    return Enum.zip(a, b)::Enum.all(([x, y]) => Equals(x, y))
-  }
-  if (IsMap(a)) {
-    if (!IsMap(b)) return false
-    return Equals(Enum.toList(a), Enum.toList(b))
-  }
-  return a === b
-}
+const Equals = (a, b) => isEqual(a, b)
 
 function GetAndUpdateIn (data, keys, next) {
   const [head, ...tail] = keys
