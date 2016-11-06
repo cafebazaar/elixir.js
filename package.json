@@ -1,6 +1,6 @@
 {
   "name": "elixir.js",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Simulates part of Elixir standard library in JS",
   "main": "dist/ex.js",
   "browser": "dist/ex.js",
