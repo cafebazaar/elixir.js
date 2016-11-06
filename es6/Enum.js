@@ -143,6 +143,17 @@ const Not = (fn) => x => !fn(x)
 const Reject = (enumerable, fn) =>
   Filter(enumerable, Not(fn))
 
+const Sort = (enumerable, fn = null) => {
+  const copy = CloneList(ToList(enumerable))
+  if (fn == null) {
+    copy.sort()
+  } else {
+    const comp = (x, y) => fn(x, y) ? -1 : 1
+    copy.sort(comp)
+  }
+  return copy
+}
+
 const Zip = (enum1, enum2) => {
   const a = ToList(enum1)
   const b = ToList(enum2)
@@ -171,6 +182,7 @@ export const find = Bindable(Find)
 export const into = Bindable(Into)
 export const map = Bindable(FMap)
 export const reject = Bindable(Reject)
+export const sort = Bindable(Sort)
 export const toList = Bindable(ToList)
 export const zip = Bindable(Zip)
 
@@ -197,6 +209,7 @@ Object.assign(Module, {
   into,
   map,
   reject,
+  sort,
   toList,
   to_list: toList,
   zip,

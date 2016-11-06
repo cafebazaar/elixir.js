@@ -284,4 +284,25 @@ describe('Enum', () => {
       )
     })
   })
+
+  describe('#sort', () => {
+    it('sorts the enumerable according to string Unicode code points', () => {
+      assert.deepEqual(Enum.sort([3, 2, 1]), [1, 2, 3])
+      assert.deepEqual(Enum.sort(['a', 'c', 'b']), ['a', 'b', 'c'])
+    })
+
+    it('does not mutates the enumerable', () => {
+      const list = [3, 4, 2, 1]
+      assert.deepEqual(Enum.sort(list), [1, 2, 3, 4])
+      assert.deepEqual(list, [3, 4, 2, 1])
+    })
+
+    it('sorts the enumerable by the given function.', () => {
+      assert.deepEqual(Enum.sort([1, 2, 3], (x, y) => x > y), [3, 2, 1])
+      assert.deepEqual(
+        Enum.sort(['some', 'sample', 'of', 'monster'], (x, y) => x.length <= y.length),
+        ['of', 'some', 'sample', 'monster']
+      )
+    })
+  })
 })
