@@ -1,7 +1,7 @@
 /* eslint-env node, mocha */
 /* global chai */
 
-import List from '../src/List'
+import List from '../es6/List'
 
 const assert = chai.assert
 

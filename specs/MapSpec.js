@@ -3,7 +3,7 @@
 
 import eq from 'lodash.isequal'
 
-import Map from '../src/Map'
+import Map from '../es6/Map'
 
 const assert = chai.assert
 

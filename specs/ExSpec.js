@@ -1,8 +1,8 @@
 /* eslint-env node, mocha */
 /* global chai */
 
-import Ex from '../src/Ex'
-import Map from '../src/Map'
+import Ex from '../es6/Ex'
+import Map from '../es6/Map'
 
 const assert = chai.assert
 

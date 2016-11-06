@@ -1,8 +1,8 @@
 /* eslint-env node, mocha */
 /* global chai */
 
-import Map from '../src/Map'
-import Enum from '../src/Enum'
+import Map from '../es6/Map'
+import Enum from '../es6/Enum'
 
 const assert = chai.assert
 
